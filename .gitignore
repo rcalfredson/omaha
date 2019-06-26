@@ -1,2 +1,4 @@
+.vscode/
+
 data/alphavantage/*
 !data/alphavantage/.keep
