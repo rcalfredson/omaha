@@ -1,9 +1,9 @@
 import numpy as np
 
 def exp_moving_average(values, period):
-    """ 
+    """
     Returns calculated exponential moving average for an array of numbers.
-    
+
     Source: https://codereview.stackexchange.com/a/166640
     Arguments:
       - values: array of type float
