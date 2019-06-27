@@ -1,3 +1,5 @@
+"""General-use mathematical functions.
+"""
 import numpy as np
 
 def exp_moving_average(values, period):
@@ -11,6 +13,6 @@ def exp_moving_average(values, period):
     """
     weights = np.exp(np.linspace(-1., 0., period))
     weights /= weights.sum()
-    a = np.convolve(values, weights, mode='full')[:len(values)]
-    a[:period] = a[period]
-    return a
+    convolved_array = np.convolve(values, weights, mode='full')[:len(values)]
+    convolved_array[:period] = convolved_array[period]
+    return convolved_array

@@ -9,7 +9,7 @@ with open('./data/static/symbols.json') as f:
     STOCKS = json.load(f)
 
 for timeframe in [{'entry': 55, 'exit': 20}, {'entry': 20, 'exit': 10}]:
-    for method in ['max', 'min']:
+    for method in ['min', 'max']:
         candidate = None
         while not candidate:
             random_pick = random.SystemRandom().choice(STOCKS)
