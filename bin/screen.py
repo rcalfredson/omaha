@@ -8,7 +8,7 @@ from lib.breakout import entry_by_symbol
 with open('./data/static/symbols.json') as f:
     STOCKS = json.load(f)
 
-for timeframe in [{'entry': 55, 'exit': 20}, {'entry': 20, 'exit': 10}]:
+for timeframe in [{'entry': 20, 'exit': 10}, {'entry': 55, 'exit': 20}]:
     for method in ['min', 'max']:
         candidate = None
         while not candidate:
