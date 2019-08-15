@@ -8,9 +8,21 @@ from lib.breakout import entry_by_symbol
 with open('./data/static/symbols.json') as f:
     STOCKS = json.load(f)
 
-for timeframe in [{'entry': 20, 'exit': 10}, {'entry': 55, 'exit': 20}]:
-    for method in ['min', 'max']:
-        candidate = None
+def reset():
+    """
+    outputs candidate of "None" and a randomly-chosen timeframe and method.
+    """
+    timeframe = random.SystemRandom().choice([{'entry': 20, 'exit': 10}, {'entry': 55, 'exit': 20}])
+    method = random.SystemRandom().choice(['min', 'max'])
+    print(f"Timeframe: {timeframe}\tMethod: {method}")
+    return (None, timeframe, method)
+
+def main():
+    """
+    choose a potential stock candidate based on a randomly selected timeframe and strategy (short or long)
+    """
+    while True:
+        candidate, timeframe, method = reset()
         while not candidate:
             random_pick = random.SystemRandom().choice(STOCKS)
             try:
@@ -19,6 +31,10 @@ for timeframe in [{'entry': 20, 'exit': 10}, {'entry': 55, 'exit': 20}]:
             except (TypeError, KeyError) as error:
                 print(f"Error evaluating {random_pick}: {error}")
                 continue
-            candidate = result[0] if result else None
+            if result:
+                candidate = result[0]
+                print(f"Found {timeframe['entry']}-day { {'min': 'short', 'max': 'long'}[method] } " +\
+                    f"candidate: {candidate}")
+                candidate, timeframe, method = reset()
 
-        print(f"Found {timeframe['entry']}-day { {'min': 'short', 'max': 'long'}[method] } candidate: {candidate}")
+main()
