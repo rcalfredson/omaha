@@ -2,6 +2,7 @@
 """
 from random import randint
 import datetime
+import json
 from .alphavantage import backward_from
 from .maths import exp_moving_average
 
@@ -44,19 +45,22 @@ def entry_by_symbol(symbols,
     symbols_to_consider = []
     for symbol in symbols:
         print(f"Evaluating {symbol}")
-        data = backward_from(symbol, num_days_entry + avg_smoothing_period, day_to_analyze)
-        price_subset_entry = exp_moving_average([float(data[date]['4. close']) for\
-            date in data], avg_smoothing_period)\
-            [avg_smoothing_period:]
-        if detected(price_subset_entry, mode):
-            print('detected...')
-            historical_data = backward_from(symbol, 365, day_to_analyze)
-            if last_breakout_failed(mode, historical_data, num_days_entry, num_days_exit):
-                print(price_subset_entry)
-                print(f"Trend duration: {trend_duration(mode, historical_data, num_days_entry, avg_smoothing_period)}")
-                symbols_to_consider.append(symbol)
-            else:
-                print('BUT LAST BREAKOUT DID NOT FAIL')
+        try:
+            data = backward_from(symbol, num_days_entry + avg_smoothing_period, day_to_analyze)
+            price_subset_entry = exp_moving_average([float(data[date]['4. close']) for\
+                date in data], avg_smoothing_period)\
+                [avg_smoothing_period:]
+            if detected(price_subset_entry, mode):
+                print('detected...')
+                historical_data = backward_from(symbol, 365, day_to_analyze)
+                if last_breakout_failed(mode, historical_data, num_days_entry, num_days_exit):
+                    print(price_subset_entry)
+                    print(f"Trend duration: {trend_duration(mode, historical_data, num_days_entry, avg_smoothing_period)}")
+                    symbols_to_consider.append(symbol)
+                else:
+                    print('BUT LAST BREAKOUT DID NOT FAIL')
+        except (json.decoder.JSONDecodeError, OverflowError, LookupError) as error:
+            print(f"Error evaluating {symbol}: {error}")
     return symbols_to_consider
 
 def exit_mode(mode):

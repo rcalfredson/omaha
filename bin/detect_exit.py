@@ -3,8 +3,8 @@
 import datetime
 from lib.breakout import exit_by_symbol
 
-POSITIONS = {'10': {'min': [], 'max': []},
-             '20': {'min': ['FARM', 'WHF'], 'max': ['VCSH', 'QRTEB', 'GLDI']}}
+POSITIONS = {'10': {'min': ['FSTR'], 'max': ['NGHCO']},
+             '20': {'min': ['FARM', 'WHF', 'SFIX'], 'max': ['VCSH', 'GLDI', 'NEOS']}}
 
 for position_timeframe in POSITIONS:
     for position_mode in POSITIONS[position_timeframe].keys():

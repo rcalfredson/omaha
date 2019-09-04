@@ -49,10 +49,18 @@ def backward_from(symbol, num_days, from_date=datetime.datetime.today()):
     start_date = from_date - timedelta(days=num_days)
     data = daily(symbol, start_date, from_date)
     days_diff = num_days - len(data.keys())
+    max_attempts = 20
+    num_attempts = 0
+    len_data_prev = 0
     while days_diff > 0:
         start_date -= timedelta(days=days_diff)
         data = daily(symbol, start_date, from_date)
-        days_diff = num_days - len(data.keys())
+        len_data = len(data)
+        days_diff = num_days - len_data
+        num_attempts = num_attempts + 1 if len_data == len_data_prev else 0
+        len_data_prev = len_data
+        if num_attempts >= max_attempts:
+            raise LookupError(f'Requested data range for {symbol} not available.')
     return_object = {}
     for date in sorted(data.keys()):
         return_object[date] = data[date]
