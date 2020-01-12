@@ -26,7 +26,9 @@ def main():
         while not candidate:
             random_pick = random.SystemRandom().choice(STOCKS)
             try:
-                result = entry_by_symbol([random_pick], method, datetime.datetime.today(), timeframe['entry'],
+                result = entry_by_symbol([random_pick], method,
+                                         datetime.datetime.today(),
+                                         timeframe['entry'],
                                          timeframe['exit'])
             except (TypeError, KeyError) as error:
                 print(f"Error evaluating {random_pick}: {error}")
